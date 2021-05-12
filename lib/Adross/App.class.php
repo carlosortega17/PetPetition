@@ -1,28 +1,22 @@
 <?php
 namespace Adross;
 
-use Adross\Template;
+use Adross\Router;
 
 class App
 {
-    public $user;
-    public $post;
-    public $params;
-    public $url;
+    public $router;
+    private $route;
     
     public function __construct()
     {
-        $uri = $_SERVER['REQUEST_URI'];
-        $this->url = $uri;
-        $this->params = explode("/", $uri);
+        $this->route = $_SERVER['REQUEST_URI'];
+        $this->router = new Router();
     }
 
-    public function get($route, $view, $context = [])
+    public function Check()
     {
-        if($this->url==$route)
-        {
-            $path = "views/".$view.".html";
-            echo new Template($path, $context);
-        }
+        if($this->router->req["URL"] != $this->route)
+            echo "Error page not found ".$this->route;
     }
 }

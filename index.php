@@ -6,13 +6,38 @@ use Models\Usuario;
 
 // Models
 $usuario = new Usuario();
-
 $app = new App();
 
-$app->get('/', 'index', ["title"=>"Bienvenido", "usuario"=>$usuario->index()]);
-$app->get('/home', 'index');
-$app->get('/about', 'about');
-$app->get('/auth', 'auth/index');
-$app->get('/auth/logged', 'auth/dashboard');
+// Verify login
+$verifySession = function(){
+    if(!isset($_SESSION['user']))
+    {
+        global $app;
+        $app->router->redirect('/auth/dashboard');
+    }
+};
 
+// Routes
+$app->router->get('/', function($req, $res){
+    global $usuario;
+    $contex = [
+        "title"=>"Bienvenido",
+        "usuario"=>$usuario->index()
+    ];
+    $res->render('index', $contex);
+});
+
+$app->router->get('/about', function($req, $res){
+    $res->render('about', ["title"=>"About"]);
+});
+
+$app->router->get('/user/login', function($req, $res){
+    $res->render('user/login', ["title"=>"About"]);
+});
+
+$app->router->post('/test', function ($req, $res){
+    print_r($req);
+});
+
+$app->Check();
 ?>

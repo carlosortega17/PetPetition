@@ -1,4 +1,5 @@
 <?php
+session_start();
 function autoload($classname)
 {
     $classname = str_replace('\\', '/', $classname);

@@ -1,8 +1,4 @@
-<h1>Welcome</h1>
-<table>
-<?php foreach($usuario as $us){ ?>
-<tr>
-    <td><?= $us["_id"] ?></td>
-</tr>
-    <?php } ?>
-</table>
+<form action="/test" method="POST">
+    <input type="text" name="test" value="<?php if(isset($_SESSION['alo'])) echo $_SESSION['alo']; ?>">
+    <input type="submit" value="Send">
+</form>
