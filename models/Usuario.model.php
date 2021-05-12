@@ -4,9 +4,9 @@ use Adross\Schema;
 
 class Usuario extends Schema
 {
-    public function __construct()
+    public function __construct($force=false)
     {
-        $this->schemaname = "tb_usuario";
+        $this->schemaname = "Usuario";
         $this->columns =
         [
             [
@@ -28,6 +28,6 @@ class Usuario extends Schema
                 "nullable"=>"NULL"
             ],
         ];
-        $this->start();
+        $this->start($force);
     }
 }

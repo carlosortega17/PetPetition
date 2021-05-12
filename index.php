@@ -6,6 +6,7 @@ use Models\Usuario;
 
 // Models
 $usuario = new Usuario();
+$post = new Post();
 $app = new App();
 
 // Verify login

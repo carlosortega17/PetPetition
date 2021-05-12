@@ -3,12 +3,14 @@ namespace Models;
 use Adross\Schema;
 use Models\Usuario;
 
-class Post extends Schema
+// Use this model for examples
+
+class Base extends Schema
 {
     public function __construct($force=false)
     {
         $user = new Usuario(); // Here model do you add foreign
-        $this->schemaname = "Post";
+        $this->schemaname = "tb_posts";
         $this->columns =
         [
             [
@@ -30,7 +32,7 @@ class Post extends Schema
                 "type"=>"TIMESTAMP",
             ],
         ];
-
+        
         $this->foreigns = [[
             "foreign"=>[
                 "model_schema_name"=> $user->schemaname,
