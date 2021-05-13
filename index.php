@@ -9,6 +9,9 @@ $usuario = new Usuario();
 $post = new Post();
 $app = new App();
 
+// Routes
+include_once('./routes/home.php');
+
 // Verify login
 $verifySession = function(){
     if(!isset($_SESSION['user']))
@@ -19,14 +22,6 @@ $verifySession = function(){
 };
 
 // Routes
-$app->router->get('/', function($req, $res){
-    global $usuario;
-    $contex = [
-        "title"=>"Bienvenido",
-        "usuario"=>$usuario->index()
-    ];
-    $res->render('index', $contex);
-});
 
 $app->router->get('/about', function($req, $res){
     $res->render('about', ["title"=>"About"]);

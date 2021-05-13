@@ -10,9 +10,4 @@ class Route
         $path = "views/".$view.".html";
         echo new Template($path, $context);
     }
-
-    public function redirect($route)
-    {
-        header("Location: ".$route);
-    }
 }

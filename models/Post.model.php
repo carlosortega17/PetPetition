@@ -7,6 +7,7 @@ class Post extends Schema
 {
     public function __construct($force=false)
     {
+        parent:: __construct();
         $user = new Usuario(); // Here model do you add foreign
         $this->schemaname = "Post";
         $this->columns =
@@ -23,7 +24,6 @@ class Post extends Schema
             [
                 "name"=>"user",
                 "type"=>"INTEGER",
-                "attrib"=>"UNSIGNED"
             ],
             [
                 "name"=>"timestamp",

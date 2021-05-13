@@ -2,8 +2,6 @@
 namespace Adross;
 
 use Adross\Router;
-use Models\Post;
-use Models\Usuario;
 
 class App
 {
@@ -20,11 +18,5 @@ class App
     {
         if($this->router->req["URL"] != $this->route)
             echo "Error page not found ".$this->route;
-    }
-
-    public static function RebuildAllSchemas()
-    {
-        new Post(true);
-        new Usuario(true);
     }
 }

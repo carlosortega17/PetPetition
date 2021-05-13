@@ -77,7 +77,7 @@ class Router
 
     public function redirect($route)
     {
-        header('Location: '.$route);
+        echo '<script>window.location.href="'.$route.'"</script>';
     }
 }
 ?>

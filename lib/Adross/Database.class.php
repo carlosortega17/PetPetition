@@ -1,32 +1,52 @@
 <?php
 namespace Adross;
 // libs
+
+use Exception;
 use mysqli;
-include_once('Config.php');
+use Adross\Config;
+
 class Database
 {
     public $instance;
+    private $config;
+    
     public function __construct()
     {
-        $temp = new mysqli(HOST, USER, PASS);
-        $temp->query('CREATE DATABASE IF NOT EXISTS '.DATA);
-        $this->instance = new mysqli(HOST, USER, PASS, DATA);
+        $this->config = Config::Database();
+        $temp = new mysqli($this->config->host, $this->config->user, $this->config->password);
+        $temp->query('CREATE DATABASE IF NOT EXISTS '.$this->config->database);
+        $this->instance = new mysqli($this->config->host, $this->config->user, $this->config->password, $this->config->database);
     }
 
     public function NonQuery($text)
     {
-        $this->instance->query($text);
-        return $this->instance->affected_rows != -1 ? true : false;
+        try
+        {
+            $this->instance->query($text);
+            return $this->instance->affected_rows != -1 ? true : false;
+        }
+        catch(Exception $err)
+        {
+            echo $err;
+        }
     }
 
     public function Query($text)
     {
-        $fetch = [];
-        $temp = $this->instance->query($text);
-        while($res = $temp->fetch_assoc())
+        try
         {
-            $fetch[] = $res;
+            $fetch = [];
+            $temp = $this->instance->query($text);
+            while($res = $temp->fetch_assoc())
+            {
+                $fetch[] = $res;
+            }
+            return $fetch;
         }
-        return $fetch;
+        catch(Exception $err)
+        {
+            
+        }
     }
 }

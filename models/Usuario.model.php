@@ -6,6 +6,7 @@ class Usuario extends Schema
 {
     public function __construct($force=false)
     {
+        parent:: __construct();
         $this->schemaname = "Usuario";
         $this->columns =
         [
