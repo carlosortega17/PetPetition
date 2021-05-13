@@ -43,7 +43,7 @@ Con esta estructura el framework funciona correctamente, y si es eliminado algun
 
 Como usarlo:
 
-###Paso 1
+### Paso 1
 
 Modificar el archivo - views/templates/main.html
 
@@ -84,7 +84,7 @@ $app->router->get('/about', function($req, $res){ // Primer parametro la ruta, s
 });
 ```
 
-###Paso 2
+### Paso 2
 
 Configurar config.json
 
@@ -109,7 +109,7 @@ Configurar config.json
 
 El archivo de config.json esta originalmente de esta forma, puedes alterar la ruta de main_template por otra template principal.
 
-###Paso 3
+### Paso 3
 
 Creamos una vista llamada index.html en la carpeta views
 
@@ -117,7 +117,7 @@ Creamos una vista llamada index.html en la carpeta views
 <h1>Vista index</h1>
 ```
 
-###Paso 4
+### Paso 4
 Para la estructura principal de un proyecto es necesario que el archivo index.php tenga una estructura como esta:
 
 ```
