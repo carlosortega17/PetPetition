@@ -19,7 +19,7 @@ Su utilidad actual cuenta con Vistas, Rutas y plantillas.
 La estructura principal de un proyecto con este framework es la siguiente:
 
 - lib
-    -Adross
+    - Adross
         - App.class.php
         - Config.class.php
         - Database.class.php
