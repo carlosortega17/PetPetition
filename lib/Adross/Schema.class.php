@@ -9,7 +9,7 @@ class Schema
     private $database;
     public $columns;
     public $foreigns;
-    private $table_prefix;
+    public $table_prefix;
 
     public function __construct()
     {
@@ -60,12 +60,72 @@ class Schema
 
     public function index()
     {
-        return $this->database->Query("SELECT * FROM ".$this->schemaname);
+        $query = "SELECT * FROM ".$this->schemaname." ORDER BY _id DESC;";
+        $query_result = $this->database->Query($query);
+        if(isset(func_get_args()[0]))
+        {
+            if(func_get_args()[0])
+            {
+                return [$query_result, $query];
+            }
+        }
+        return $query_result;
     }
 
-    public function show($id)
+    public function showAllByID($id)
     {
-        return $this->database->Query("SELECT * FROM ".$this->schemaname." WHERE _id = ".$id);
+        $query = "SELECT * FROM ".$this->schemaname." WHERE _id = ".$id." ORDER BY _id DESC;";
+        $query_result = $this->database->Query($query);
+        if(isset(func_get_args()[1]))
+        {
+            if(func_get_args()[1])
+            {
+                return [$query_result, $query];
+            }
+        }
+        return $query_result;
+    }
+
+    public function showAllByColumns($dataColumns)
+    {
+        $query = "SELECT * FROM ".$this->schemaname." WHERE ";
+        for($i=0;$i<count($dataColumns);$i++){
+            if(count($dataColumns) > 0){
+                $temp = is_numeric($dataColumns[$i]["value"]) ? $dataColumns[$i]["value"] : "'".$dataColumns[$i]["value"]."'";
+                $query .= $dataColumns[$i]["name"]." = ".$temp;
+                if(count($dataColumns) != ($i+1)) $query .= " and ";
+            }
+        }
+        $query .= isset(func_get_args()[1]) ? " ORDER BY _id ".func_get_args()[1].";" : " ORDER BY _id DESC;";
+        $query_result = $this->database->Query($query);
+        return $query_result;
+    }
+
+    public function joinSelector($data)
+    {
+        /* Example of use
+        joinSelector([[
+            "table"=>$post->schemaname,
+            "column"=>"user"
+        ],[
+            "table"=>"tb_test",
+            "column"=>"user"
+        ]]) */
+        $inner = "";
+        foreach($data as $d)
+        {
+            $inner .= " INNER JOIN ".$d['table']." ON ".$this->schemaname."._id = ".$d['table'].".".$d['column'];
+        }
+        $query = "SELECT * FROM `".$this->schemaname."` ".$inner;
+        $query_result = $this->database->Query($query);
+        if(isset(func_get_args()[1]))
+        {
+            if(func_get_args()[1])
+            {
+                return [$query_result, $query];
+            }
+        }
+        return $query_result;
     }
 
     public function create($data)
@@ -93,16 +153,51 @@ class Schema
         }
         $query .= ");";
         //echo $query;
-        $this->database->NonQuery($query);
+        $query_result = $this->database->NonQuery($query);
+        if(isset(func_get_args()[1]))
+        {
+            if(func_get_args()[1])
+            {
+                return [$query_result, $query];
+            }
+        }
+        else
+        {
+            return $query_result;
+        }
     }
 
-    public function update($id)
+    public function update($data)
     {
-
+        $value = null;
+        foreach($this->columns as $colum)
+        {
+            if($colum['name'] == $data[1])
+            {
+                $value = (is_numeric($data[2]) && ($colum['type'] == "INTEGER" || $colum['type'] == "FLOAT" || $colum['type'] == "DOUBLE")) ? $data[2] : "'".$data[2]."'";
+            }
+        }
+        $query = "UPDATE `".$this->schemaname."` SET `".$data[1]."` = ".$value." WHERE _id=".$data[0].";";
+        $query_result = $this->database->NonQuery($query);
+        if(isset(func_get_args()[1]))
+        {
+            if(func_get_args()[1])
+            {
+                return [$query_result, $query];
+            }
+        }
     }
 
     public function delete($id)
     {
-
+        $query = "DELETE FROM `".$this->schemaname."` WHERE _id=".$id.";";
+        $query_result = $this->database->NonQuery($query);
+        if(isset(func_get_args()[1]))
+        {
+            if(func_get_args()[1])
+            {
+                return [$query_result, $query];
+            }
+        }
     }
 }

@@ -1,7 +1,6 @@
 <?php
 namespace Models;
 use Adross\Schema;
-use Models\Usuario;
 
 // Use this model for examples
 
@@ -9,7 +8,7 @@ class Base extends Schema
 {
     public function __construct($force=false)
     {
-        $user = new Usuario(); // Here model do you add foreign
+        parent::__construct();
         $this->schemaname = "tb_posts";
         $this->columns =
         [
@@ -33,14 +32,14 @@ class Base extends Schema
             ],
         ];
         
-        $this->foreigns = [[
+        /*$this->foreigns = [[
             "foreign"=>[
-                "model_schema_name"=> $user->schemaname,
+                "model_schema_name"=> $this->table_prefix.'tablename',
                 "relation_name"=>"SAMPLE",
                 "root"=>"user",
                 "on_delete"=>"CASCADE",
                 "on_update"=>"NO ACTION"]
-            ]];
+            ]];*/
         $this->start($force);
     }
 }

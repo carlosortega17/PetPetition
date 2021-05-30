@@ -1,0 +1,58 @@
+<div class="container my-4">
+    <?php foreach($post as $row){ ?>
+    <div class="row">    
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <img class="card-img-top" onClick="imageView(this);" src='<?= $row["image"] ?>' height="500" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title"><?= $row["title"] ?></h5>
+                    <p class="card-text">
+                        <?= $row["text"] ?>
+                    </p>
+                    <?php if($_SESSION['user']['Usuario'] != $row["user"]){ ?>
+                    <p class="card-text">
+                        <button class="btn btn-danger form-control" onclick="petitionPost(<?= $row['_id'] ?>);">Solicitar</button>
+                    </p>
+                    <?php }else{ ?>
+                    <p class="card-text">
+                        <button class="btn btn-danger form-control" onclick="deletePost(<?= $row['_id'] ?>);">Eliminar</button>
+                    </p>
+                    <?php } ?>
+                    <p class="card-text">
+                        <span class="text-muted text-center">Numero de solicitandes: <?= $row["num"] ?></span>
+                    </p>
+                    <p class="card-text"><small class="text-muted">Fecha: <?php $fecha = new DateTime($row["date"]); echo $fecha->format('d-m-Y'); ?> | Hora: <?php $hora = new DateTime($row["time"]); echo $hora->format('h:m a') ?> | Por: <?= $row["user"] ?> | Categoria: <?= $row["category"] ?></small></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php } ?>
+</div>
+<div class="custom-modal text-right p-3" id="modal" onclick="closeModal();">
+    <img src="/favicon.png" alt="" width="700" height="900">
+</div>
+<style>
+    .card img{
+        cursor: pointer;
+    }
+    .custom-modal
+    {
+        width: 100%;
+        height: 100%;
+        display: none;
+        position: absolute;
+        color: whitesmoke;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .custom-modal img
+    {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+</style>
+<script src="/public/js/auth.home.js"></script>

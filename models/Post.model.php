@@ -1,41 +1,47 @@
 <?php
 namespace Models;
 use Adross\Schema;
-use Models\Usuario;
-
 class Post extends Schema
 {
     public function __construct($force=false)
     {
         parent:: __construct();
-        $user = new Usuario(); // Here model do you add foreign
         $this->schemaname = "Post";
         $this->columns =
         [
             [
-                "name"=>"title",
+                "name"=>"Titulo",
+                "type"=>"VARCHAR",
+                "size"=>255
+            ],
+            [
+                "name"=>"Contenido",
+                "type"=>"TEXT",
+            ],
+            [
+                "name"=>"Fecha",
+                "type"=>"TIMESTAMP"
+            ],
+            [
+                "name"=>"Categoria",
                 "type"=>"VARCHAR",
                 "size"=>30
             ],
             [
-                "name"=>"description",
-                "type"=>"TEXT",
+                "name"=>"Imagen",
+                "type"=>"VARCHAR",
+                "size"=>255
             ],
             [
-                "name"=>"user",
-                "type"=>"INTEGER",
-            ],
-            [
-                "name"=>"timestamp",
-                "type"=>"TIMESTAMP",
-            ],
+                "name"=>"Usuario",
+                "type"=>"INTEGER"
+            ]
         ];
-
         $this->foreigns = [[
             "foreign"=>[
-                "model_schema_name"=> $user->schemaname,
-                "relation_name"=>"SAMPLE",
-                "root"=>"user",
+                "model_schema_name"=> $this->table_prefix."Usuario",
+                "relation_name"=>"post_to_usuario",
+                "root"=>"Usuario",
                 "on_delete"=>"CASCADE",
                 "on_update"=>"NO ACTION"]
             ]];

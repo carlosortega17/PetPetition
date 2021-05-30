@@ -11,24 +11,33 @@ class Usuario extends Schema
         $this->columns =
         [
             [
-                "name"=>"user",
+                "name"=>"Usuario",
                 "type"=>"VARCHAR",
-                "size"=>30, 
+                "size"=>40
+            ],
+            [
+                "name"=>"Clave",
+                "type"=>"VARCHAR",
+                "size"=>255
+            ],
+            [
+                "name"=>"Informacion",
+                "type"=>"INTEGER",
                 "nullable"=>"NULL"
             ],
             [
-                "name"=>"pass",
-                "type"=>"VARCHAR",
-                "size"=>30,
-                "nullable"=>"NULL"
-            ],
-            [
-                "name"=>"email",
-                "type"=>"VARCHAR",
-                "size"=>30,
-                "nullable"=>"NULL"
-            ],
+                "name"=>"FechaRegistro",
+                "type"=>"TIMESTAMP"
+            ]
         ];
+        $this->foreigns = [[
+            "foreign"=>[
+            "model_schema_name"=> $this->table_prefix."Informacion_Usuario",
+            "relation_name"=>"usuario_to_informacion_usuario",
+            "root"=>"Informacion",
+            "on_delete"=>"CASCADE",
+            "on_update"=>"NO ACTION"]
+        ]];
         $this->start($force);
     }
 }

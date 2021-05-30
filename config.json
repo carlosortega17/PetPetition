@@ -1,10 +1,10 @@
 {
     "debug":"true",
     "database_deploy":{
-        "host":"id16397877_petpetition",
+        "host":"localhost",
         "user":"id16397877_petpetitiondb",
         "password":"{L*CB@^L2XIEcG\\@",
-        "database":"localhost"
+        "database":"id16397877_petpetition"
     },
     "database_dev":{
         "host":"localhost",

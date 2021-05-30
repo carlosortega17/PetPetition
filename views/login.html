@@ -1,0 +1,31 @@
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <form class="col-md-5 border rounded p-4" action="/login" method="post">
+            <div class="form-group">
+                <h3>Acceder al sitio</h3>
+            </div>
+            <div class="form-group">
+                <label>Correo</label>
+                <input type="email" name="email" id="" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label>Contraseña</label>
+                <input type="password" minlength="8" maxlength="30" name="pass" id="" class="form-control" required>
+            </div>
+            <?php if(isset($message)){ ?>
+            <div class="form-group">
+                <div class="alert alert-<?= isset($type) ? $type : 'danger' ?> alert-dismissible fade show" role="alert">
+                    <strong>Mensaje:</strong>
+                    <?= $message ?>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            <?php } ?>
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary form-control" value="Acceder">
+            </div>
+        </form>
+    </div>
+</div>
