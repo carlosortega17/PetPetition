@@ -1,7 +1,22 @@
 RewriteEngine on
 RewriteBase /
 
+<Files ~ "\.json$">  
+Order Allow,Deny
+Deny from All
+</Files>
+
+<Files ~ "\.htaccess$">  
+Order Allow,Deny
+Deny from All
+</Files>
+
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
-RewriteRule ^(.*)$ index.php
+RewriteRule (^|/)templates(/|$) - [F]
+RewriteRule (^|/)views(/|$) - [F]
+RewriteRule (^|/)uploads(/|$) - [F]
+RewriteRule (^|/)lib(/|$) - [F]
+RewriteRule (^|/)models(/|$) - [F]
+RewriteRule ^([a-zA-Z0-9-/]+)$ index.php
