@@ -7,10 +7,10 @@
         "database":"id16397877_petpetition"
     },
     "database_dev":{
-        "host":"us-cdbr-east-04.cleardb.com",
-        "user":"bfcc554d4fad40",
-        "password":"b2317562",
-        "database":"heroku_3390e2c67a0a26e"
+        "host":"localhost",
+        "user":"root",
+        "password":"",
+        "database":"petpetition"
     },
     "main_template":"templates/main.html"
 }
