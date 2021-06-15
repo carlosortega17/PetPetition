@@ -26,6 +26,10 @@ class Usuario extends Schema
                 "nullable"=>"NULL"
             ],
             [
+                "name"=>"Rol",
+                "type"=>"INTEGER"
+            ],
+            [
                 "name"=>"FechaRegistro",
                 "type"=>"TIMESTAMP"
             ]
@@ -37,7 +41,16 @@ class Usuario extends Schema
             "root"=>"Informacion",
             "on_delete"=>"CASCADE",
             "on_update"=>"NO ACTION"]
-        ]];
+            ],
+            [
+                "foreign"=>[
+                "model_schema_name"=> $this->table_prefix."Rol",
+                "relation_name"=>"usuario_to_rol",
+                "root"=>"Rol",
+                "on_delete"=>"CASCADE",
+                "on_update"=>"NO ACTION"]
+            ]
+        ];
         $this->start($force);
     }
 }

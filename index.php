@@ -2,6 +2,7 @@
 include_once('autoload.class.php');
 date_default_timezone_set('America/Tijuana');
 use Adross\App;
+use Adross\Database;
 use Models\Usuario;
 use Models\Informacion_Usuario;
 use Models\Peticion;
@@ -42,6 +43,55 @@ function CheckUserAsView($view, $context, $req, $res){
 function CheckUserAsBoolean(){
     if(isset($_SESSION['user'])){
         return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+/*
+* TYPE: FUNCTION
+* NAME: CheckAdminAsView
+* DESCRIPTION: La funcion permite 
+* generar vistas protegidas por 
+* el login del usuario
+*/
+
+function CheckAdminAsView($view, $context, $req, $res){
+    if(isset($_SESSION['user'])){
+        if($_SESSION['user']['Rol'] == 1){
+            $res->render($view, $context);
+        }
+        else
+        {
+            echo "Error, no administrator rol";
+        }
+    }
+    else
+    {
+        echo "User not logged";
+    }
+}
+
+/*
+* TYPE: FUNCTION
+* NAME: CheckAdminAsBoolean
+* DESCRIPTION: La funcion permite 
+* verificar el login del usuario 
+* como verdadero o falso
+*/
+
+function CheckAdminAsBoolean(){
+    if(isset($_SESSION['user'])){
+        if($_SESSION['user']['Rol'] == 1)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
     else
     {
@@ -183,6 +233,7 @@ $app->router->post("/registerUser", function($req, $res){
             $req["body"]["user"] . "#" . $usercomposition,
             hash('sha256', $req["body"]["pass"]),
             $_id,
+            "2",
             date('Y-m-d H:i:s')
         ]);
         $res->render('register', ["title" => "Petpetition - Error on register", "message" => "Usuario creado exitosamente", "type" => "success"]);
@@ -278,6 +329,24 @@ $app->router->get("/auth/home", function($req, $res){
     CheckUserAsView('auth/home', ["title"=>"Petpetition - Panel", "post"=>$post], $req, $res);
 });
 
+$app->router->get("/auth/admin", function($req, $res){
+    if(CheckUserAsBoolean())
+    {
+        if(CheckAdminAsBoolean())
+        {
+            $res->render("auth/admin", []);
+        }
+        else
+        {
+            echo "No user as admin";
+        }
+    }
+    else
+    {
+        echo "Not logged";
+    }
+});
+
 /*
 * TYPE: ROUTE 
 * LOGIN: true
@@ -368,6 +437,44 @@ $app->router->post("/auth/post", function($req, $res){
         }
     }else{
         header('location: /');
+    }
+});
+
+/* 
+* TYPE: ROUTE
+* LOGIN: true
+* ROUTE: /auth/post/applicants
+* METHOD: GET
+*/
+
+$app->router->get("/auth/post/applicants", function($req, $res){
+    if(CheckUserAsBoolean()){
+        global $requestPet;
+        global $userPost;
+        global $user;
+        $db = new Database();
+        $consulta = $db->Query("SELECT 
+        tb_peticion._id as id, 
+        tb_usuario._id as id_solicitante, 
+        tb_usuario.Usuario as Solicitante, 
+        tb_post.Titulo as Titulo,
+        tb_post.Imagen as Imagen,
+        tb_post.Contenido as Contenido FROM `tb_peticion` 
+        INNER JOIN `tb_usuario` ON tb_usuario._id = tb_peticion.Usuario 
+        INNER JOIN `tb_post` ON tb_post._id = tb_peticion.Post 
+        WHERE tb_post.Usuario = ".$_SESSION['user']['_id']);
+        if($consulta>0){
+            $temp = [];
+            foreach($consulta as $peticion){
+                $peticion['Imagen'] = GetImage($peticion["Imagen"]);
+                $temp[] = $peticion;
+            }
+            $res->render('auth/applicants', ["peticiones"=>$temp]);
+        }
+        else
+        {
+
+        }
     }
 });
 
