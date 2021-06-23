@@ -16,6 +16,10 @@ class Peticion extends Schema
             [
                 "name"=>"Post",
                 "type"=>"INTEGER"
+            ],
+            [
+                "name"=>"Estado",
+                "type"=>"INTEGER"
             ]
         ];
         

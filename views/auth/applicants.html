@@ -9,20 +9,36 @@
                             <h4 class="text-center"><?= $peticion['Titulo'] ?></h4>
                         </div>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body text-center">
+                        <?php if($peticion["Estado"] == 0){ ?>
                         <p>
-                            Descripción: <span class="text-muted"><?= $peticion['Contenido'] ?></span>
+                            <b>Descripción:</b> <span class="text-muted"><?= $peticion['Contenido'] ?></span>
                         </p>
                         <p>
-                            Solicitante: <a href="/auth/profile/view/<?= $peticion['id_solicitante'] ?>"><span class="text-muted"><?= $peticion['Solicitante'] ?></span></a>
+                            <b>Solicitante:</b> <a href="/auth/profile/view/<?= $peticion['id_solicitante'] ?>"><span class="text-muted"><?= $peticion['Solicitante'] ?></span></a>
                         </p>
                         <p>
-                            <button class="btn btn-success form-control">Aprobar</button><br><br>
-                            <button class="btn btn-danger form-control">Denegar</button>
+                            <button class="btn btn-success form-control" onclick="Aprovar(<?= $peticion['id'] ?>)">Aprobar</button><br><br>
+                            <button class="btn btn-danger form-control" onclick="Denegar(<?= $peticion['id'] ?>)">Denegar</button>
                         </p>
+                        <?php }else{ ?>
+                        <p>
+                            <b>Nombre:</b> <?= $peticion["Nombre"] ?> <?= $peticion["Apellido"] ?>
+                        </p>
+                        <p>
+                            <b>Correo:</b> <?= $peticion["Correo"] ?>
+                        </p>
+                        <p>
+                            <b>Telefono:</b> <?= $peticion["Telefono"] ?>
+                        </p>
+                        <p>
+                            Esta es la informacion del usuario solicitante, puede comunicarse con el de la forma que usted quiera.
+                        </p>
+                        <?php } ?>
                     </div>
                 </div>
             </div>
         </div>
     <?php } ?>
 </div>
+<script src="/public/js/auth.applicants.js"></script>

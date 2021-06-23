@@ -459,9 +459,15 @@ $app->router->get("/auth/post/applicants", function($req, $res){
         tb_usuario.Usuario as Solicitante, 
         tb_post.Titulo as Titulo,
         tb_post.Imagen as Imagen,
-        tb_post.Contenido as Contenido FROM `tb_peticion` 
+        tb_post.Contenido as Contenido,
+        tb_peticion.Estado as Estado,
+        tb_informacion_usuario.Correo as Correo, 
+        tb_informacion_usuario.Nombre as Nombre, 
+        tb_informacion_usuario.Apellido as Apellido, 
+        tb_informacion_usuario.Numero as Telefono FROM `tb_peticion` 
         INNER JOIN `tb_usuario` ON tb_usuario._id = tb_peticion.Usuario 
         INNER JOIN `tb_post` ON tb_post._id = tb_peticion.Post 
+        INNER JOIN `tb_informacion_usuario` ON tb_informacion_usuario._id = tb_usuario._id 
         WHERE tb_post.Usuario = ".$_SESSION['user']['_id']);
         if($consulta>0){
             $temp = [];
@@ -471,9 +477,34 @@ $app->router->get("/auth/post/applicants", function($req, $res){
             }
             $res->render('auth/applicants', ["peticiones"=>$temp]);
         }
-        else
-        {
+    }
+});
 
+/* 
+* TYPE: ROUTE
+* LOGIN: true
+* ROUTE: /auth/post/applicants/aprovar
+* METHOD: GET
+*/
+
+$app->router->post("/auth/post/applicants/aprovar", function($req, $res){
+    if(CheckUserAsBoolean()){
+        global $requestPet;
+        if(isset($req["body"]["id"]) && isset($req["body"]["type"])){
+            if($req["body"]["type"]=="apr")
+            {
+                $requestPet->update([$req["body"]["id"], "Estado", 1]);
+                $res->json(["message"=>"Aprove"]);
+            }
+            else if($req["body"]["type"]=="del")
+            {
+                $requestPet->delete($req["body"]["id"]);
+                $res->json(["message"=>"Delete"]);
+            }
+            else
+            {
+                $res->json(["message"=>"Error"]);
+            }
         }
     }
 });
